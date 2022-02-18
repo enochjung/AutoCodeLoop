@@ -3,7 +3,7 @@
 void function() {
 	#pragma GCC unroll($LOOP_UNROLL)
 	register float64x2x3_t $FOR($0, $MR, $'_V_C$$$', $', $');
-	$FOR($0, $MR, $'_V_C$$ = vld1q_f64_x3(&C[$$ * $MR);$', $'
+	$FOR($0, $MR, $'_V_C$$ = vld1q_f64_x3(&C[$$ * $MR]);$', $'
 	$')
 	int a = $L1_DIST;
 }

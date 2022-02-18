@@ -2,7 +2,7 @@
 
 If you need to write iterative code without for loop, this will help you.
 
-sample.code
+### sample.code
 ```C
  #include <arm_neon.h>
 
@@ -17,7 +17,7 @@ void function() {
 
 to
 
-output
+### output
 ```C
 #include <arm_neon.h>
 
@@ -36,4 +36,8 @@ void function() {
 }
 ```
 
-#Usage
+# Usage
+## 1. Create ACL
+## 2. Write Code
+## 3. Set Environment Variables
+## 4. Run ACL

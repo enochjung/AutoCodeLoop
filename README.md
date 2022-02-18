@@ -81,13 +81,12 @@ $'<string>$'
 `$'<string>$'` is only for '$FOR'. If you want to include `i` value into string, use `$$`. `$$` is replaced by `i` value.
 ## 3. Set Environment Variables & Run ACL
 If you use `$<environment variable>`, you have to export the environment variables.
+Then run ACL. Usage : `./acl <code>`.
+
+Running sample code
 ```
 export LOOP_UNROLL=3
 export MR=8
 export L1_DIST=100
-```
-
-And run ACL. Usage:`./acl <code>`.
-```
 ./acl sample.code
 ```

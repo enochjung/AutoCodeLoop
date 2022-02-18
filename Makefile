@@ -11,4 +11,4 @@ lex.yy.c: cg.l
 	lex cg.l
 
 clean:
-	rm -f $(TARGET) lex.yy.c y.tab.c y.tab.h
+	rm -f $(TARGET)

@@ -49,8 +49,15 @@ Then, runnable file 'acl' will be created.
 AutoCodeLoop syntax is expressed with special token `$`.
 ### for
 ```
-$FOR(A, B, string, string)
+$FOR(number_A, number_B, string_A, string_B)
 ```
+this works like
+```C
+for (i=number_A; i<number_B; i++) {
+ printf(string_A);
+ if (i < number_B-1) // not last
+  printf(string_B);
+}
 
 ### number
 `$<number>` 

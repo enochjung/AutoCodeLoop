@@ -47,11 +47,15 @@ make
 Then, runnable file 'acl' will be created.
 ## 2. Write Code
 AutoCodeLoop syntax is expressed with special token `$`.
-### number
-$<number>
-$<environment variable>
 ### for
+```
 $FOR(A, B, string, string)
+```
+
+### number
+`$<number>` 
+`$<environment variable>`
+
 ### string
 $'<string>$'
 ### $$

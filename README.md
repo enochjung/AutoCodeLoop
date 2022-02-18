@@ -38,6 +38,13 @@ void function() {
 
 # Usage
 ## 1. Create ACL
+follow this step
+```Shell
+git clone https://github.com/enochjung/AutoCodeLoop.git
+cd AutoCodeLoop
+make
+```
+Then, runnable file 'acl' will be created.
 ## 2. Write Code
 ## 3. Set Environment Variables
 ## 4. Run ACL

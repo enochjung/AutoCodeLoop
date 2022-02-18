@@ -51,17 +51,28 @@ AutoCodeLoop syntax is expressed with special token `$`.
 ```
 $FOR(number_A, number_B, string_A, string_B)
 ```
-this works like
+`$FOR` writes code iteratively. This works like
 ```C
 for (i=number_A; i<number_B; i++) {
- printf(string_A);
- if (i < number_B-1) // not last
-  printf(string_B);
+    printf(string_A);
+    if (i < number_B-1)
+        printf(string_B);
 }
-
+```
 ### number
-`$<number>` 
-`$<environment variable>`
+```
+$<number>
+or
+$<environment variable>
+```
+`$<number>` or `$<environment variable>` is needed for `$FOR`. Also, it can be used for code. For example,
+```
+    printf("size : $SIZE\n");
+```
+if you set the environment variable `SIZE` by `export SIZE=100`, it will be as follows.
+```
+    printf("size : 100\n");
+```
 
 ### string
 $'<string>$'

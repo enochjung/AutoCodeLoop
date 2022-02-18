@@ -1,0 +1,8 @@
+#include <arm_neon.h>
+
+void function()
+{
+	#pragma GCC unroll($LOOP_UNROLL)
+	register float64x2x3_t $FOR($0, $MR, $'_V_C$$$', $', $');
+	int a = $L1_DIST_A;
+}

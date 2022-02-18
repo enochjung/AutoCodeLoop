@@ -6,25 +6,17 @@ typedef long YYSTYPE;
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <errno.h>
 
-typedef struct _node
-{
+typedef struct _node {
 	char* code;
 	struct _node* next;
 } node;
-
-typedef struct _identifier
-{
-	char* name;
-	int value;
-	struct _identifier* next;
-} identifier;
 
 node* link(node* a, node* b);
 node* make_node(char* str);
 node* copy_node(node* n);
 node* change_i(node* n, int i);
-void make_identifier(char* name, int value);
 char* int_to_char(int val);
 int get_value(char* ident_name);
 char* allocate_string(char* str);
@@ -35,16 +27,9 @@ int yywrap();
 
 extern YYSTYPE yylval;
 extern char* yytext;
-identifier* identifier_head;
-node* program_code;
+extern int errno;
 
-/*
-extern A_ID* current_id;
-extern int current_level;
-extern int syntax_err;
-extern A_NODE* root;
-extern A_TYPE* int_type;
-*/
+node* program_code;
 %}
 
 %start program
@@ -68,7 +53,7 @@ code
 	| RP { $$=(YYSTYPE)make_node((char*)$1); }
 	;
 unit
-	: IDENTIFIER { $$=(YYSTYPE)make_node(int_to_char(get_value((char*)$1))); }
+	: IDENTIFIER { $$=(YYSTYPE)make_node(int_to_char(get_value((char*)$1+1))); }
 	| FOR LP for_expression RP { $$=$3; }
 	;
 for_expression
@@ -76,7 +61,7 @@ for_expression
 	;
 value
 	: INTEGER COMMA { $$=$1; }
-	| IDENTIFIER COMMA { $$=get_value((char*)$1); }
+	| IDENTIFIER COMMA { $$=get_value((char*)$1+1); }
 	;
 for_translation_unit
 	: for_code_or_unit { $$=$1; }
@@ -92,8 +77,7 @@ i_value
 	;
 %%
 
-node* link(node* a, node* b)
-{
+node* link(node* a, node* b) {
 	node* n = a;
 	while (n->next)
 		n = n->next;
@@ -101,30 +85,25 @@ node* link(node* a, node* b)
 	return a;
 }
 
-node* make_node(char* str)
-{
+node* make_node(char* str) {
 	node* n = (node*)malloc(sizeof(node));
 	n->code = str;
 	n->next = NULL;
 	return n;
 }
 
-node* copy_node(node* n)
-{
+node* copy_node(node* n) {
 	node* head = (node*)malloc(sizeof(node));
 	node* nn = head;
 
-	while (1)
-	{
+	while (1) {
 		nn->code = n->code;
-		if (n->next != NULL)
-		{
+		if (n->next != NULL) {
 			nn->next = (node*)malloc(sizeof(node));
 			nn = nn->next;
 			n = n->next;
 		}
-		else
-		{
+		else {
 			nn->next = NULL;
 			break;
 		}
@@ -133,12 +112,10 @@ node* copy_node(node* n)
 	return head;
 }
 
-node* change_i(node* n, int i)
-{
+node* change_i(node* n, int i) {
 	node* start = n;
 
-	while (1)
-	{
+	while (1) {
 		if (strcmp(n->code, "$$") == 0)
 			n->code = int_to_char(i);
 		if (n->next == NULL)
@@ -149,22 +126,7 @@ node* change_i(node* n, int i)
 	return start;
 }
 
-void make_identifier(char* name, int value)
-{
-	identifier* ident;
-
-	ident = (identifier*)malloc(sizeof(identifier));
-	ident->name = (char*)malloc(strlen(name)+1);
-	strcpy(ident->name, name);
-	ident->value = value;
-	ident->next = identifier_head;
-	identifier_head = ident;
-
-	return;
-}
-
-char* int_to_char(int val)
-{
+char* int_to_char(int val) {
 	char* str;
 	char buf[100];
 	int len;
@@ -177,23 +139,26 @@ char* int_to_char(int val)
 	return str;
 }
 
-int get_value(char* ident_name)
-{
-	identifier* ident = identifier_head;
+int get_value(char* ident_name) {
+	char* var;
+	long val;
 
-	while (ident != NULL)
-	{
-		if (strcmp(ident->name, ident_name+1) == 0)
-			return ident->value;
-		ident = ident->next;
+	if ((var = getenv(ident_name)) == NULL) {
+		fprintf(stderr, "ERROR: environment variable '%s' is not defined.\n", ident_name);
+		exit(1);
 	}
 
-	fprintf(stderr, "ERROR: %s는 parameter 파일에 정의되어 있지 않습니다.\n", ident_name+1);
-	exit(1);
+	val = strtol(var, NULL, 10);
+	if (errno != 0) {
+		fprintf(stderr, "ERROR: environment variable '%s' is not integer.\n"
+						"       %s=%s\n", ident_name, ident_name, var);
+		exit(1);
+	}
+
+	return (int)val;
 }
 
-char* allocate_string(char* str)
-{
+char* allocate_string(char* str) {
 	char* new_str;
 	int len;
 
@@ -204,51 +169,37 @@ char* allocate_string(char* str)
 	return new_str;
 }
 
-void initialize()
-{
-	FILE* fp;
-	char name[100];
-	int value;
-	identifier* ident;
-
-	fp = fopen("parameter", "r");
-	if (fp == NULL)
-	{
-		fprintf(stderr, "ERROR: parameter 파일이 없습니다.\n");
+void initialize(char* file_name) {
+	if (freopen(file_name, "r", stdin) == NULL) {
+		fprintf(stderr, "ERROR: file '%s' is not found.\n", file_name);
 		exit(1);
 	}
-
-	while (fscanf(fp, " %s %d", name, &value) == 2)
-		make_identifier(name, value);
-
-	fclose(fp);
 }
 
-void print_entire_code(node* n)
-{
-	while (n != NULL)
-	{
+void print_entire_code(node* n) {
+	while (n != NULL) {
 		printf("%s", n->code);
 		n = n->next;
 	}
 	return;
 }
 
-int main()
-{
-	initialize();
+int main(int argc, char** argv) {
+	if (argc != 2) {
+		fprintf(stderr, "USAGE: ./acl <code_file>\n");
+		exit(1);
+	}
+	initialize(argv[1]);
 	yyparse();
 	print_entire_code(program_code);
 	return 0;
 }
 
-int yywrap()
-{
+int yywrap() {
 	return 1;
 }
 
-void yyerror(char const *s)
-{
+void yyerror(char const *s) {
 	printf("yyerror(%s)\n", s);
 	fprintf(stderr, "error %s near: %s\n", s, yytext);
 	exit(1);

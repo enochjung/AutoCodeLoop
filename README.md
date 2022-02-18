@@ -37,7 +37,7 @@ void function() {
 ```
 
 # Usage
-## 1. Create ACL
+## 1. Create AutoCodeLoop
 follow this step
 ```Shell
 git clone https://github.com/enochjung/AutoCodeLoop.git
@@ -46,7 +46,7 @@ make
 ```
 Then, runnable file 'acl' will be created.
 ## 2. Write Code
-ACL syntax is expressed with special token `$`.
+AutoCodeLoop syntax is expressed with special token `$`.
 ### number
 $<number>
 $<environment variable>

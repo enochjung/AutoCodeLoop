@@ -66,16 +66,18 @@ or
 $<environment variable>
 ```
 `$<number>` or `$<environment variable>` is needed for `$FOR`. Also, it can be used for code. For example,
-```
+```C
     printf("size : $SIZE\n");
 ```
 if you set the environment variable `SIZE` by `export SIZE=100`, it will be as follows.
-```
+```C
     printf("size : 100\n");
 ```
 
 ### string
+```
 $'<string>$'
-### $$
+```
+`$'<string>$'` is only for '$FOR'. If you want to include `i` value into string, use `$$`. `$$` is replaced by `i` value.
 ## 3. Set Environment Variables
 ## 4. Run ACL

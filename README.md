@@ -39,7 +39,7 @@ void function() {
 # Usage
 ## 1. Create AutoCodeLoop
 follow this step
-```Shell
+```shell
 git clone https://github.com/enochjung/AutoCodeLoop.git
 cd AutoCodeLoop
 make
@@ -52,7 +52,7 @@ AutoCodeLoop syntax is expressed with special token `$`.
 $FOR(number_A, number_B, string_A, string_B)
 ```
 `$FOR` writes code iteratively. This works like
-```C
+```c
 for (i=number_A; i<number_B; i++) {
     printf(string_A);
     if (i < number_B-1)

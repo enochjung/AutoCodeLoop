@@ -20,7 +20,7 @@ node* change_i(node* n, int i);
 char* int_to_char(int val);
 int get_value(char* ident_name);
 char* allocate_string(char* str);
-void print_entire_code(node* n);
+void print_entire_code(node* n, char* file_name);
 int yylex();
 void yyerror(char const *s);
 int yywrap();
@@ -176,22 +176,28 @@ void initialize(char* file_name) {
 	}
 }
 
-void print_entire_code(node* n) {
+void print_entire_code(node* n, char* file_name) {
+	FILE* fp = fopen(file_name, "w");
+	if (fp == NULL) {
+		fprintf(stderr, "ERROR: cannot write file '%s'.\n", file_name);
+		exit(1);
+	}
 	while (n != NULL) {
-		printf("%s", n->code);
+		fprintf(fp, "%s", n->code);
 		n = n->next;
 	}
+	fclose(fp);
 	return;
 }
 
 int main(int argc, char** argv) {
-	if (argc != 2) {
-		fprintf(stderr, "USAGE: ./acl <code_file>\n");
+	if (argc != 3) {
+		fprintf(stderr, "USAGE: ./acl <input_file> <output_file>\n");
 		exit(1);
 	}
 	initialize(argv[1]);
 	yyparse();
-	print_entire_code(program_code);
+	print_entire_code(program_code, argv[2]);
 	return 0;
 }
 

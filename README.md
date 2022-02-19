@@ -78,7 +78,7 @@ if you set the environment variable `SIZE` by `export SIZE=100`, it will be as f
 ```
 $'<string>$'
 ```
-`$'<string>$'` is only for '$FOR'. If you want to include `i` value into string, use `$$`. `$$` is replaced by `i` value.
+`$'<string>$'` is only for `$FOR`. If you want to include `i` value into string, use `$$`. `$$` is replaced by `i` value.
 ## 3. Set Environment Variables & Run ACL
 If you use `$<environment variable>`, you have to export the environment variables.
 Then run ACL.   

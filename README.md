@@ -84,7 +84,7 @@ If you use `$<environment variable>`, you have to export the environment variabl
 Then run ACL. Usage : `./acl <input_code> <output_code>`.
 
 Running sample code
-```
+```shell
 export LOOP_UNROLL=3
 export MR=8
 export L1_DIST=100

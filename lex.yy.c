@@ -459,7 +459,7 @@ int yy_flex_debug = 0;
 #define YY_RESTORE_YY_MORE_OFFSET
 char *yytext;
 #line 1 "cg.l"
-#line 8 "cg.l"
+#line 7 "cg.l"
 #define YYSTYPE_IS_DECLARED 1 
 typedef long YYSTYPE;
 #include <stdlib.h>
@@ -686,7 +686,7 @@ YY_DECL
 		}
 
 	{
-#line 18 "cg.l"
+#line 17 "cg.l"
 
 #line 692 "lex.yy.c"
 
@@ -747,78 +747,78 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 19 "cg.l"
+#line 18 "cg.l"
 { }
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 20 "cg.l"
+#line 19 "cg.l"
 { return FOR; }
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 21 "cg.l"
+#line 20 "cg.l"
 { return IF; }
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 22 "cg.l"
+#line 21 "cg.l"
 { return ELIF; }
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 23 "cg.l"
+#line 22 "cg.l"
 { return ELSE; }
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 24 "cg.l"
+#line 23 "cg.l"
 { return ENDIF; }
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 25 "cg.l"
+#line 24 "cg.l"
 { yylval=(YYSTYPE)allocate_string(yytext); return LP; }
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 26 "cg.l"
+#line 25 "cg.l"
 { yylval=(YYSTYPE)allocate_string(yytext); return RP; }
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 27 "cg.l"
+#line 26 "cg.l"
 { yylval=(YYSTYPE)allocate_string(yytext); return COMMA; }
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 28 "cg.l"
+#line 27 "cg.l"
 { return QUOTE; }
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 29 "cg.l"
+#line 28 "cg.l"
 { return I_VALUE; }
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 30 "cg.l"
+#line 29 "cg.l"
 { yylval=atoi(yytext+1); return INTEGER; }
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 31 "cg.l"
+#line 30 "cg.l"
 { yylval=(YYSTYPE)allocate_string(yytext+1); return IDENTIFIER; }
 	YY_BREAK
 case 14:
 /* rule 14 can match eol */
 YY_RULE_SETUP
-#line 32 "cg.l"
+#line 31 "cg.l"
 { yylval=(YYSTYPE)allocate_string(yytext); return CODE; }
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 33 "cg.l"
+#line 32 "cg.l"
 ECHO;
 	YY_BREAK
 #line 825 "lex.yy.c"
@@ -1826,6 +1826,6 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 33 "cg.l"
+#line 32 "cg.l"
 
 

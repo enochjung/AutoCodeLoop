@@ -53,12 +53,24 @@ $FOR(number_A, number_B, string_A, string_B)
 ```
 `$FOR` writes code iteratively. This works like
 ```c
-for (i=number_A; i<number_B; i++) {
+i=number_A;
+printf(string_A);
+for (i=number_A+1; i<number_B; i++) {
+    printf(string_B);
     printf(string_A);
-    if (i < number_B-1)
-        printf(string_B);
 }
 ```
+### if elif else endif
+```
+$IF(number_A, number_B)
+...
+$ELIF(number_A, number_B)
+...
+$ELSE
+...
+$ENDIF
+```
+`$IF` writes code if `number_A == number_B`. `$ENDIF` must be specified at the end of `$IF`, `$ELIF` or `$ELSE`.
 ### number
 ```
 $<number>

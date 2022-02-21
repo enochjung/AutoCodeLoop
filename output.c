@@ -13,3 +13,12 @@ void function() {
 	_V_C7 = vld1q_f64_x3(&C[7 * 8]);
 	int a = 100;
 }
+
+
+void my_strcpy(char* dest, const char* src) {
+	int i;
+	int len = strlen(src);
+	for (i=0; i<len; ++i)
+		dest[i] = src[i];
+}
+

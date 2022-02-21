@@ -83,12 +83,7 @@ if_next // node*
 	;
 if_final // node*
 	: ENDIF { $$=(YYSTYPE)NULL; }
-	| ELSE LP value COMMA value RP translation_unit ENDIF {
-		if ($3 == $5)
-			$$ = $7;
-		else
-			$$ = (YYSTYPE)NULL;
-	}
+	| ELSE translation_unit ENDIF { $$=$2; }
 	;
 value // int
 	: INTEGER { $$=$1; }

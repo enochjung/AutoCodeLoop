@@ -1,4 +1,4 @@
-%token IDENTIFIER DOLLAR_DOLLAR FOR IF ELIF ELSE ENDIF LP RP COMMA DOLLAR_QUOTE INTEGER CODE
+%token FOR IF ELIF ELSE ENDIF LP RP COMMA QUOTE I_VALUE INTEGER IDENTIFIER CODE
 
 %{
 #define YYSTYPE_IS_DECLARED 1 
@@ -11,10 +11,12 @@ typedef long YYSTYPE;
 typedef struct _node {
 	char* code;
 	struct _node* next;
+	int is_i_value;
 } node;
 
 node* link(node* a, node* b);
 node* make_node(char* str);
+node* make_i_value_node();
 node* copy_node(node* n);
 node* change_i(node* n, int i);
 char* int_to_char(int val);
@@ -35,23 +37,57 @@ node* program_code;
 %start program
 
 %%
-program 
+program // node*
 	: translation_unit { program_code=(node*)$1; }
 	;
-translation_unit
+translation_unit // node*
 	: code_or_unit { $$=$1; }
 	| translation_unit code_or_unit { $$=(YYSTYPE)link((node*)$1,(node*)$2); }
 	;
-code_or_unit
+code_or_unit // node*
 	: code { $$=$1; }
 	| unit { $$=$1; }
 	;
-code
+code // node*
 	: CODE { $$=(YYSTYPE)make_node((char*)$1); }
-	| COMMA { $$=(YYSTYPE)make_node((char*)$1); }
 	| LP { $$=(YYSTYPE)make_node((char*)$1); }
 	| RP { $$=(YYSTYPE)make_node((char*)$1); }
+	| COMMA { $$=(YYSTYPE)make_node((char*)$1); }
 	;
+unit // node*
+	: value { $$=(YYSTYPE)make_node(int_to_char($1)); }
+	| FOR LP value COMMA value COMMA string COMMA string RP {
+		int i;
+		node* n = change_i(copy_node((node*)$7), $3);
+		for (i=$3+1; i<$5; ++i) {
+			link(n, copy_node((node*)$9));
+			link(n, change_i(copy_node((node*)$7), i));
+		}
+		$$ = (YYSTYPE)n;
+	}
+//	| IF ELIF ELSE
+	;
+value // int
+	: INTEGER { $$=$1; }
+	| IDENTIFIER { $$=get_value((char*)$1); }
+	;
+string // node*
+	: QUOTE QUOTE { $$=(YYSTYPE)NULL; }
+	| QUOTE string_unit QUOTE { $$=$2; }
+	;
+string_unit // node*
+	: string_component { $$=$1; }
+	| string_unit string_component { $$=(YYSTYPE)link((node*)$1,(node*)$2); }
+	;
+string_component // node*
+	: code { $$=$1; }
+	| value { $$=(YYSTYPE)make_node(int_to_char($1)); }
+	| i_value { $$=$1; }
+	;
+i_value // node*
+	: I_VALUE { $$=(YYSTYPE)make_i_value_node(); }
+	;
+/*
 unit
 	: IDENTIFIER { $$=(YYSTYPE)make_node(int_to_char(get_value((char*)$1+1))); }
 	| FOR LP for_expression RP { $$=$3; }
@@ -73,8 +109,9 @@ for_code_or_unit
 	| i_value { $$=$1; }
 	;
 i_value
-	: DOLLAR_DOLLAR { $$=(YYSTYPE)make_node("$$"); }
+	: I_VALUE { $$=(YYSTYPE)make_node("$$"); }
 	;
+	*/
 %%
 
 node* link(node* a, node* b) {
@@ -89,6 +126,15 @@ node* make_node(char* str) {
 	node* n = (node*)malloc(sizeof(node));
 	n->code = str;
 	n->next = NULL;
+	n->is_i_value = 0;
+	return n;
+}
+
+node* make_i_value_node() {
+	node* n = (node*)malloc(sizeof(node));
+	n->code = NULL;
+	n->next = NULL;
+	n->is_i_value = 1;
 	return n;
 }
 
@@ -98,6 +144,7 @@ node* copy_node(node* n) {
 
 	while (1) {
 		nn->code = n->code;
+		nn->is_i_value = n->is_i_value;
 		if (n->next != NULL) {
 			nn->next = (node*)malloc(sizeof(node));
 			nn = nn->next;
@@ -116,7 +163,7 @@ node* change_i(node* n, int i) {
 	node* start = n;
 
 	while (1) {
-		if (strcmp(n->code, "$$") == 0)
+		if (n->is_i_value == 1)
 			n->code = int_to_char(i);
 		if (n->next == NULL)
 			break;
@@ -183,7 +230,8 @@ void print_entire_code(node* n, char* file_name) {
 		exit(1);
 	}
 	while (n != NULL) {
-		fprintf(fp, "%s", n->code);
+		if (n->code != NULL)
+			fprintf(fp, "%s", n->code);
 		n = n->next;
 	}
 	fclose(fp);
@@ -206,7 +254,6 @@ int yywrap() {
 }
 
 void yyerror(char const *s) {
-	printf("yyerror(%s)\n", s);
-	fprintf(stderr, "error %s near: %s\n", s, yytext);
+	fprintf(stderr, "ERROR: syntax error(%s) near: %s\n", s, yytext);
 	exit(1);
 }

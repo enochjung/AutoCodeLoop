@@ -18,11 +18,15 @@ extern YYSTYPE yylval;
 {ws}		{ }
 "$$"		{ return DOLLAR_DOLLAR; }
 "$FOR"		{ return FOR; }
+"$IF"		{ return IF; }
+"$ELIF"		{ return ELIF; }
+"$ELSE"		{ return ELSE; }
+"$ENDIF"	{ return ENDIF; }
 "(" 		{ yylval=(YYSTYPE)allocate_string(yytext); return LP; }
 ")" 		{ yylval=(YYSTYPE)allocate_string(yytext); return RP; }
 "," 		{ yylval=(YYSTYPE)allocate_string(yytext); return COMMA; }
 "$'"		{ return DOLLAR_QUOTE; }
-"$"{digit}+						{ yylval=atoi(yytext+1); return(INTEGER); }
+"$"{digit}+						{ yylval=atoi(yytext+1); return INTEGER; }
 "$"{letter}({letter}|{digit})*	{ yylval=(YYSTYPE)allocate_string(yytext); return IDENTIFIER; }
 [^$^(^)^,]+						{ yylval=(YYSTYPE)allocate_string(yytext); return CODE; }
 %%

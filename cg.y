@@ -110,31 +110,6 @@ string_component // node*
 i_value // node*
 	: I_VALUE { $$=(YYSTYPE)make_i_value_node(); }
 	;
-/*
-unit
-	: IDENTIFIER { $$=(YYSTYPE)make_node(int_to_char(get_value((char*)$1+1))); }
-	| FOR LP for_expression RP { $$=$3; }
-	;
-for_expression
-	: value value DOLLAR_QUOTE for_translation_unit DOLLAR_QUOTE COMMA DOLLAR_QUOTE code DOLLAR_QUOTE { int i;node* n=change_i(copy_node((node*)$4),$1);for(i=($1)+1;i<$2;++i){link(n,copy_node((node*)$8));link(n,change_i(copy_node((node*)$4),i));}$$=(YYSTYPE)n; }
-	;
-value
-	: INTEGER COMMA { $$=$1; }
-	| IDENTIFIER COMMA { $$=get_value((char*)$1+1); }
-	;
-for_translation_unit
-	: for_code_or_unit { $$=$1; }
-	| for_translation_unit for_code_or_unit { $$=(YYSTYPE)link((node*)$1,(node*)$2);}
-	;
-for_code_or_unit
-	: code { $$=$1; }
-	| unit { $$=$1; }
-	| i_value { $$=$1; }
-	;
-i_value
-	: I_VALUE { $$=(YYSTYPE)make_node("$$"); }
-	;
-	*/
 %%
 
 node* link(node* a, node* b) {

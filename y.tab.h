@@ -49,27 +49,35 @@ extern int yydebug;
 # define YYTOKENTYPE
   enum yytokentype
   {
-    IDENTIFIER = 258,
-    DOLLAR_DOLLAR = 259,
-    FOR = 260,
-    LP = 261,
-    RP = 262,
-    COMMA = 263,
-    DOLLAR_QUOTE = 264,
-    INTEGER = 265,
-    CODE = 266
+    FOR = 258,
+    IF = 259,
+    ELIF = 260,
+    ELSE = 261,
+    ENDIF = 262,
+    LP = 263,
+    RP = 264,
+    COMMA = 265,
+    QUOTE = 266,
+    I_VALUE = 267,
+    INTEGER = 268,
+    IDENTIFIER = 269,
+    CODE = 270
   };
 #endif
 /* Tokens.  */
-#define IDENTIFIER 258
-#define DOLLAR_DOLLAR 259
-#define FOR 260
-#define LP 261
-#define RP 262
-#define COMMA 263
-#define DOLLAR_QUOTE 264
-#define INTEGER 265
-#define CODE 266
+#define FOR 258
+#define IF 259
+#define ELIF 260
+#define ELSE 261
+#define ENDIF 262
+#define LP 263
+#define RP 264
+#define COMMA 265
+#define QUOTE 266
+#define I_VALUE 267
+#define INTEGER 268
+#define IDENTIFIER 269
+#define CODE 270
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED

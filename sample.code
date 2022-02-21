@@ -7,3 +7,18 @@ void function() {
 	$')
 	int a = $L1_DIST;
 }
+
+$IF($COPY_VER,$1)
+void my_strcpy(char* dest, const char* src) {
+	int i;
+	for (i=0; i<strlen(src); ++i)
+		dest[i] = src[i];
+}
+$ELIF($COPY_VER,$2)
+void my_strcpy(char* dest, const char* src) {
+	int i;
+	int len = strlen(src);
+	for (i=0; i<len; ++i)
+		dest[i] = src[i];
+}
+$ENDIF

@@ -65,7 +65,30 @@ unit // node*
 		}
 		$$ = (YYSTYPE)n;
 	}
-//	| IF ELIF ELSE
+	| IF LP value COMMA value RP translation_unit if_next {
+		if ($3 == $5)
+			$$ = $7;
+		else
+			$$ = $8;
+	}
+	;
+if_next // node*
+	: if_final { $$=$1; }
+	| ELIF LP value COMMA value RP translation_unit if_next {
+		if ($3 == $5)
+			$$ = $7;
+		else
+			$$ = $8;
+	}
+	;
+if_final // node*
+	: ENDIF { $$=(YYSTYPE)NULL; }
+	| ELSE LP value COMMA value RP translation_unit ENDIF {
+		if ($3 == $5)
+			$$ = $7;
+		else
+			$$ = (YYSTYPE)NULL;
+	}
 	;
 value // int
 	: INTEGER { $$=$1; }
